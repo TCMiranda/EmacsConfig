@@ -75,9 +75,11 @@
       (set-window-start (selected-window) other-window-start))
          (select-window other-window)))
 
+## plugins
 (require 'multiple-cursors)
 (require 'zencoding-mode)
 
+## syntax
 (add-to-list 'auto-mode-alist '("\\.scss\\'" . stylus-mode))
 (add-to-list 'auto-mode-alist '("\\.styl\\'" . stylus-mode))
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
@@ -91,6 +93,7 @@
 
 (setq jsx-indent-level 2)
 
+## modes
 (undo-tree-mode t)
 (menu-bar-mode -1)
 (zencoding-mode t)
@@ -101,18 +104,18 @@
 (add-hook 'jsx-mode-hook
           (lambda () (auto-complete-mode 1)))
 
-; ident 4
+### ident 4
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 (setq indent-line-function 'insert-tab)
 
-; samuel
+## generic
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (fset 'yes-or-no-p 'y-or-n-p)
 
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-; uft8 encoding
+## uft8 encoding
 (prefer-coding-system 'utf-8)
 (setq coding-system-for-read 'utf-8)
 (setq coding-system-for-write 'utf-8)
@@ -139,11 +142,13 @@
 (global-set-key (kbd "C-c <up>")    'windmove-up)
 (global-set-key (kbd "C-c <down>")  'windmove-down)
 
+## packages config
+
 (custom-set-variables
- ## custom-set-variables was added by Custom.
- ## If you edit it by hand, you could mess it up, so be careful.
- ## Your init file should contain only one such instance.
- ## If there is more than one, they won't work right.
+ ;; custom-set-variables was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(custom-safe-themes
    (quote
     ("18a33cdb764e4baf99b23dcd5abdbf1249670d412c6d3a8092ae1a7b211613d5" "a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" "c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "f0b0710b7e1260ead8f7808b3ee13c3bb38d45564e369cbe15fc6d312f0cd7a0" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default)))
@@ -162,9 +167,9 @@
  '(sml/show-frame-identification t)
  '(sml/theme (quote dark)))
 (custom-set-faces
- ## custom-set-faces was added by Custom.
- ## If you edit it by hand, you could mess it up, so be careful.
- ## Your init file should contain only one such instance.
- ## If there is more than one, they won't work right.
+ ;; custom-set-faces was added by Custom.
+ ;; If you edit it by hand, you could mess it up, so be careful.
+ ;; Your init file should contain only one such instance.
+ ;; If there is more than one, they won't work right.
  '(sml/filename ((t (:inherit sml/global :foreground "brightcyan" :weight bold))))
  '(sml/global ((t (:foreground "color-247" :inverse-video nil)))))
