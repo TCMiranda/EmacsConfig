@@ -14,8 +14,8 @@
 ;; theme
 (set-face-attribute 'mode-line-inactive
                     nil
-                    :foreground "gray10"
-                    :background "gray10"
+                    :foreground "black"
+                    :background "black"
                     :box '(:line-width 1 :style released-button))
 
 (setq sml/theme 'dark)
@@ -91,13 +91,16 @@
 
 (setq jsx-indent-level 2)
 
+(winner-mode 1)
 (undo-tree-mode t)
 (menu-bar-mode -1)
 (zencoding-mode t)
 (desktop-save-mode 1)
 
+(smex-initialize)
+
+(add-hook 'after-init-hook 'global-company-mode)
 (add-hook 'sgml-mode-hook 'zencoding-mode)
-(add-hook 'js2-mode-hook 'ac-js2-mode)
 (add-hook 'jsx-mode-hook
           (lambda () (auto-complete-mode 1)))
 
@@ -106,7 +109,7 @@
 (setq-default tab-width 4)
 (setq indent-line-function 'insert-tab)
 
-; samuel
+; general
 (global-set-key (kbd "C-x C-b") 'ibuffer)
 (fset 'yes-or-no-p 'y-or-n-p)
 
@@ -116,6 +119,15 @@
 (prefer-coding-system 'utf-8)
 (setq coding-system-for-read 'utf-8)
 (setq coding-system-for-write 'utf-8)
+
+; key bindings
+(define-key input-decode-map "\e\eOA" [(meta up)])
+(define-key input-decode-map "\e\eOB" [(meta down)])
+
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+
+(global-set-key (kbd "C-c u") 'undo-tree-visualize)
 
 (global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
 
@@ -128,8 +140,11 @@
 
 (global-set-key (kbd "C-c U") 'undo-tree-visualize)
 
-(global-set-key (kbd "M-[ c") 'forward-word)
-(global-set-key (kbd "M-[ d") 'backward-word)
+;(global-set-key (kbd "M-[ c") 'forward-word)
+;(global-set-key (kbd "M-[ d") 'backward-word)
+
+(global-set-key (kbd "<M-down>") 'forward-paragraph)
+(global-set-key (kbd "<M-up>") 'backward-paragraph)
 
 (global-set-key (kbd "ESC <down>") 'forward-paragraph)
 (global-set-key (kbd "ESC <up>") 'backward-paragraph)
@@ -144,11 +159,12 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(buffers-menu-max-size 0)
  '(custom-safe-themes
-   (quote
-    ("18a33cdb764e4baf99b23dcd5abdbf1249670d412c6d3a8092ae1a7b211613d5" "a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" "c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "f0b0710b7e1260ead8f7808b3ee13c3bb38d45564e369cbe15fc6d312f0cd7a0" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default)))
+        (quote
+         ("18a33cdb764e4baf99b23dcd5abdbf1249670d412c6d3a8092ae1a7b211613d5" "a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" "c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "f0b0710b7e1260ead8f7808b3ee13c3bb38d45564e369cbe15fc6d312f0cd7a0" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default)))
  '(desktop-auto-save-timeout 5)
- '(inhibit-default-init f)
+ '(inhibit-default-init t)
  '(inhibit-startup-buffer-menu t)
  '(inhibit-startup-echo-area-message "tmiranda")
  '(inhibit-startup-screen t)
@@ -166,5 +182,13 @@
  ;; If you edit it by hand, you could mess it up, so be careful.
  ;; Your init file should contain only one such instance.
  ;; If there is more than one, they won't work right.
+ '(company-echo ((t nil)) t)
+ '(company-echo-common ((t (:background "white"))))
+ '(company-tooltip ((t (:foreground "white"))))
+ '(company-tooltip-selection ((t (:inherit company-tooltip :background "brightwhite"))))
+ '(menu ((t nil)))
  '(sml/filename ((t (:inherit sml/global :foreground "brightcyan" :weight bold))))
- '(sml/global ((t (:foreground "color-247" :inverse-video nil)))))
+ '(sml/global ((t (:foreground "color-247" :inverse-video nil))))
+ '(web-mode-html-attr-name-face ((t (:foreground "brightwhite"))))
+ '(web-mode-html-tag-bracket-face ((t (:foreground "brightwhite"))))
+ '(web-mode-html-tag-face ((t (:foreground "white")))))
