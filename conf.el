@@ -1,3 +1,5 @@
+;; packages config
+;;
 (require'package)
 (add-to-list 'package-archives
      '("melpa" . "http://melpa.org/packages/") t)
@@ -9,10 +11,66 @@
 (when (fboundp 'windmove-default-keybindings)
   (windmove-default-keybindings))
 
+;;(require 'zencoding-mode)
+;;(add-hook 'sgml-mode-hook 'zencoding-mode)
+
 ;; global
-:(ido-mode)
+;;
+;; core
+(menu-bar-mode -1)
+(global-linum-mode t)
+
+;; ido mode
+(setq ido-enable-flex-matching t)
+(setq ido-everywhere t)
+(ido-mode 1)
+
+;; functionalities
+(editorconfig-mode 1)
+(winner-mode 1)
+(zencoding-mode t)
+(global-company-mode t)
+
+(undo-tree-mode t)
+(global-set-key (kbd "C-c u") 'undo-tree-visualize)
+(global-set-key (kbd "C-c U") 'undo-tree-visualize)
+
+(smex-initialize)
+(global-set-key (kbd "M-x") 'smex)
+(global-set-key (kbd "M-X") 'smex-major-mode-commands)
+
+(add-hook 'after-init-hook 'global-company-mode)
+
+;; Multiple cursors
+(require 'multiple-cursors)
+(global-set-key (kbd "C-c >") 'mc/mark-next-like-this)
+(global-set-key (kbd "C-c <") 'mc/mark-previous-like-this)
+(global-set-key (kbd "C-c a >") 'mc/mark-all-like-this)
+(global-set-key (kbd "C-c a a") 'mc/mark-all-like-this)
+
+;; workgroups
+(require 'workgroups2)
+(setq wg-session-file "~/myenv/EmacsConfig/wg.session")
+(setq wg-emacs-exit-save-behavior           'ask)
+(setq wg-workgroups-mode-exit-save-behavior 'ask)
+(setq wg-mode-line-display-on t)
+
+(global-set-key (kbd "C-c v") 'wg-switch-to-workgroup)
+
+(workgroups-mode 1)
+(wg-reload-session)
+
+;; xclip
+(load "~/myenv/EmacsConfig/xclip.el")
+(xclip-mode 1)
 
 ;; theme
+;;
+(setq-default left-margin-width 1 right-margin-width 1) ; Define new widths.
+(set-window-buffer nil (current-buffer)) ; Use them now.
+(global-linum-mode t)
+(global-auto-revert-mode t)
+
 (setq sml/theme 'dark)
 (setq sml/no-confirm-load-theme t)
 
@@ -20,119 +78,52 @@
 
 (load-theme 'manoj-dark t)
 
-(setq-default left-margin-width 1 right-margin-width 1) ; Define new widths.
-(set-window-buffer nil (current-buffer)) ; Use them now.
-(global-linum-mode t)
-(global-auto-revert-mode t)
-
 ;; syntax
-(require 'multiple-cursors)
-(require 'zencoding-mode)
-(require 'workgroups)
-;;'
-
+;;
 (add-to-list 'auto-mode-alist '("\\.scss\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.styl\\'" . stylus-mode))
 
-(add-to-list 'auto-mode-alist '("\\.phtml\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.tpl\\.php\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.php\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.[agj]sp\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.erb\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.mustache\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.hbs\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.tpl\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.html\\'" . web-mode))
 
-(add-to-list 'auto-mode-alist '("\\.js\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.[tj]s\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.[tj]sx$" . web-mode))
 
-(defadvice web-mode-highlight-part (around tweak-jsx activate)
-  (if (equal web-mode-content-type "jsx")
-      (let ((web-mode-enable-part-face nil)))
-    ad-do-it
-    ad-do-it))
-
-(setq jsx-indent-level 2)
-
-(workgroups-mode 1)
-(setq wg-morph-on 'nil)
-
-;; -> using workgroups
-(wg-load "~/.myemacs/wg")
-;;'
-
-(winner-mode 1)
-(undo-tree-mode t)
-(menu-bar-mode -1)
-(zencoding-mode t)
-(desktop-save-mode 1)
-
-(define-globalized-minor-mode global-highlight-current-line-minor-mode highlight-current-line-minor-mode
-  (lambda () (highlight-current-line-minor-mode t)))
-(global-highlight-current-line-minor-mode 1)
-
-; highlight identation global mode
-;(define-globalized-minor-mode global-highlight-indentation-mode highlight-indentation-mode
-;  (lambda () (highlight-indentation-mode t)))
-;(global-highlight-indentation-mode 1)
-
-(smex-initialize)
-
-(add-hook 'after-init-hook 'global-company-mode)
-(add-hook 'sgml-mode-hook 'zencoding-mode)
-(add-hook 'jsx-mode-hook
-          (lambda () (auto-complete-mode 1)))
-
-; ident 4
+;; editor
+;;
+;; ident 4
 (setq-default indent-tabs-mode nil)
 (setq-default tab-width 4)
 (setq indent-line-function 'insert-tab)
 
-; general
-(global-set-key (kbd "C-x C-b") 'ibuffer)
+;; general
 (fset 'yes-or-no-p 'y-or-n-p)
+(global-set-key (kbd "C-x C-b") 'ibuffer)
 
+;; trailing whitespaces
 (add-hook 'before-save-hook 'delete-trailing-whitespace)
 
-; uft8 encoding
+;; uft8 encoding
 (prefer-coding-system 'utf-8)
 (setq coding-system-for-read 'utf-8)
 (setq coding-system-for-write 'utf-8)
 
-; key bindings
+;; key bindings
 (define-key input-decode-map "\e\eOA" [(meta up)])
 (define-key input-decode-map "\e\eOB" [(meta down)])
-
-(global-set-key (kbd "M-x") 'smex)
-(global-set-key (kbd "M-X") 'smex-major-mode-commands)
-
-(global-set-key (kbd "C-c u") 'undo-tree-visualize)
-
-(global-set-key (kbd "C-S-c C-S-c") 'mc/edit-lines)
-
-(global-set-key (kbd "C-c >") 'mc/mark-next-like-this)
-(global-set-key (kbd "C-c <") 'mc/mark-previous-like-this)
-(global-set-key (kbd "C-c a >") 'mc/mark-all-like-this)
-
-(global-set-key (kbd "C-c C-p") 'swap-buffers-in-windows)
-(global-set-key (kbd "C-c p") 'swap-window-positions)
-
-(global-set-key (kbd "C-c U") 'undo-tree-visualize)
-
-;(global-set-key (kbd "M-[ c") 'forward-word)
-;(global-set-key (kbd "M-[ d") 'backward-word)
 
 (global-set-key (kbd "<M-down>") 'forward-paragraph)
 (global-set-key (kbd "<M-up>") 'backward-paragraph)
 
-(global-set-key (kbd "<C-M-down>") 'forward-paragraph)
-(global-set-key (kbd "<C-M-up>") 'backward-paragraph)
+(global-set-key (kbd "ESC <down>") 'forward-paragraph)
+(global-set-key (kbd "ESC <up>") 'backward-paragraph)
 
 (global-set-key (kbd "<C-M-up>")  'move-line-up)
 (global-set-key (kbd "<C-M-down>")  'move-line-down)
-
-(global-set-key (kbd "ESC <down>") 'forward-paragraph)
-(global-set-key (kbd "ESC <up>") 'backward-paragraph)
 
 (global-set-key (kbd "C-c <left>")  'windmove-left)
 (global-set-key (kbd "C-c <right>") 'windmove-right)
@@ -140,12 +131,12 @@
 (global-set-key (kbd "C-c <down>")  'windmove-down)
 
 (global-set-key (kbd "<select>")  'end-of-line)
-;;'
 
-;; xclip
-(load "~/.emacs.d/xclip.el")
-(xclip-mode 1)
+;;(global-set-key (kbd "M-[ c") 'forward-word)
+;;(global-set-key (kbd "M-[ d") 'backward-word)
 
+;; custom functions
+;;
 (defun move-line-up ()
   "Move up the current line."
   (interactive)
@@ -161,58 +152,8 @@
   (forward-line -1)
   (indent-according-to-mode))
 
-;; buffer swapping
-(setq swapping-buffer nil)
-(setq swapping-window nil)
-
-(defun swap-buffers-in-windows ()
-  "Swap buffers between two windows"
-  (interactive)
-  (if (and swapping-window
-	   swapping-buffer)
-      (let ((this-buffer (current-buffer))
-	    (this-window (selected-window)))
-	(if (and (window-live-p swapping-window)
-		 (buffer-live-p swapping-buffer))
-	    (progn (switch-to-buffer swapping-buffer)
-		   (select-window swapping-window)
-		   (switch-to-buffer this-buffer)
-		   (select-window this-window)
-		   (message "Swapped buffers."))
-	  (message "Old buffer/window killed.  Aborting."))
-
-
-	(setq swapping-buffer nil)
-	(setq swapping-window nil))
-    (progn
-      (setq swapping-buffer (current-buffer))
-      (setq swapping-window (selected-window))
-      (message "Buffer and window marked for swapping."))))
-
-(defun swap-window-positions ()         ; Stephen Gildea
-  "*Swap the positions of this window and the next one."
-  (interactive)
-  (let ((other-window (next-window (selected-window) 'no-minibuf)))
-    (let ((other-window-buffer (window-buffer other-window))
-	  (other-window-hscroll (window-hscroll other-window))
-	  (other-window-point (window-point other-window))
-	  (other-window-start (window-start other-window)))
-      (set-window-buffer other-window (current-buffer))
-      (set-window-hscroll other-window (window-hscroll (selected-window)))
-      (set-window-point other-window (point))
-      (set-window-start other-window (window-start (selected-window)))
-      (set-window-buffer (selected-window) other-window-buffer)
-      (set-window-hscroll (selected-window) other-window-hscroll)
-      (set-window-point (selected-window) other-window-point)
-      (set-window-start (selected-window) other-window-start))
-         (select-window other-window)))
-
-;; Prelude
-;(load-file "~/.emacs.d/init.el")
-
-;;(set-face-attribute 'web-mode-function-call-face nil :foreground "color-75")
-
 ;; Customize
+;;
 (custom-set-variables
  ;; custom-set-variables was added by Custom.
  ;; If you edit it by hand, you could mess it up, so be careful.
@@ -229,6 +170,9 @@
    (quote
     ("e80932ca56b0f109f8545576531d3fc79487ca35a9a9693b62bf30d6d08c9aaf" "18a33cdb764e4baf99b23dcd5abdbf1249670d412c6d3a8092ae1a7b211613d5" "a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" "c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "f0b0710b7e1260ead8f7808b3ee13c3bb38d45564e369cbe15fc6d312f0cd7a0" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default)))
  '(desktop-auto-save-timeout 5)
+ '(dired-auto-revert-buffer t)
+ '(dired-listing-switches "-lahB --group-directories-first")
+ '(dired-use-ls-dired t)
  '(global-company-mode t)
  '(global-linum-mode t)
  '(highlight-current-line-globally t nil (highlight-current-line))
@@ -271,14 +215,14 @@
  ;; If there is more than one, they won't work right.
  '(company-echo ((t nil)) t)
  '(company-echo-common ((t (:background "color-238"))))
+ '(company-scrollbar-bg ((t nil)))
+ '(company-scrollbar-fg ((t (:background "white"))))
  '(company-tooltip ((t (:background "color-234" :foreground "brightwhite"))))
  '(company-tooltip-selection ((t (:inherit company-tooltip :background "color-238"))))
+ '(font-lock-comment-face ((t (:background "black" :foreground "chocolate1" :slant normal))))
+ '(font-lock-preprocessor-face ((t (:foreground "color-33" :slant normal))))
  '(font-lock-string-face ((t (:foreground "color-198"))))
  '(highlight-current-line-face ((t (:background "color-234"))))
- '(js2-external-variable ((t (:foreground "brightgreen"))))
- '(js2-function-call ((t (:inherit default :foreground "color-75"))))
- '(js2-function-param ((t (:foreground "brightgreen" :weight bold))))
- '(js2-object-property ((t (:inherit default :foreground "color-252"))))
  '(linum ((t (:background "black" :foreground "white" :underline nil))))
  '(menu ((t nil)))
  '(mode-line ((t (:background "color-237" :foreground "white" :inverse-video nil :box nil))))
