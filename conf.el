@@ -11,6 +11,8 @@
 (when (fboundp 'windmove-default-keybindings)
   (windmove-default-keybindings))
 
+(defconst myroot "/home/tmiranda/")
+
 ;;(require 'zencoding-mode)
 ;;(add-hook 'sgml-mode-hook 'zencoding-mode)
 
@@ -50,7 +52,7 @@
 
 ;; workgroups
 (require 'workgroups2)
-(setq wg-session-file "~/myenv/EmacsConfig/wg.session")
+(setq wg-session-file (concatenate 'string myroot "myenv/EmacsConfig/wg.session"))
 (setq wg-emacs-exit-save-behavior           'ask)
 (setq wg-workgroups-mode-exit-save-behavior 'ask)
 (setq wg-mode-line-display-on t)
@@ -61,7 +63,7 @@
 (wg-reload-session)
 
 ;; xclip
-(load "~/myenv/EmacsConfig/xclip.el")
+(load (concatenate 'string myroot "myenv/EmacsConfig/xclip.el"))
 (xclip-mode 1)
 
 ;; theme
@@ -92,6 +94,8 @@
 
 (add-to-list 'auto-mode-alist '("\\.[tj]s\\'" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.[tj]sx$" . web-mode))
+(setq web-mode-content-types-alist
+  '(("jsx"  . "\\.[tj]s[x]?\\'")))
 
 ;; editor
 ;;
@@ -166,9 +170,9 @@
  '(company-idle-delay 0.3)
  '(company-tooltip-margin 1)
  '(company-tooltip-minimum 8)
- '(custom-safe-themes
-   (quote
-    ("e80932ca56b0f109f8545576531d3fc79487ca35a9a9693b62bf30d6d08c9aaf" "18a33cdb764e4baf99b23dcd5abdbf1249670d412c6d3a8092ae1a7b211613d5" "a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" "c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "f0b0710b7e1260ead8f7808b3ee13c3bb38d45564e369cbe15fc6d312f0cd7a0" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default)))
+  '(custom-safe-themes
+     (quote
+       ("e80932ca56b0f109f8545576531d3fc79487ca35a9a9693b62bf30d6d08c9aaf" "18a33cdb764e4baf99b23dcd5abdbf1249670d412c6d3a8092ae1a7b211613d5" "a27c00821ccfd5a78b01e4f35dc056706dd9ede09a8b90c6955ae6a390eb1c1e" "c74e83f8aa4c78a121b52146eadb792c9facc5b1f02c917e3dbb454fca931223" "f0b0710b7e1260ead8f7808b3ee13c3bb38d45564e369cbe15fc6d312f0cd7a0" "3c83b3676d796422704082049fc38b6966bcad960f896669dfc21a7a37a748fa" default)))
  '(desktop-auto-save-timeout 5)
  '(dired-auto-revert-buffer t)
  '(dired-listing-switches "-lahB --group-directories-first")
@@ -220,6 +224,7 @@
  '(company-tooltip ((t (:background "color-234" :foreground "brightwhite"))))
  '(company-tooltip-selection ((t (:inherit company-tooltip :background "color-238"))))
  '(font-lock-comment-face ((t (:background "black" :foreground "chocolate1" :slant normal))))
+ '(font-lock-doc-face ((t (:background "color-234" :foreground "LightCoral" :slant normal))))
  '(font-lock-preprocessor-face ((t (:foreground "color-33" :slant normal))))
  '(font-lock-string-face ((t (:foreground "color-198"))))
  '(highlight-current-line-face ((t (:background "color-234"))))
